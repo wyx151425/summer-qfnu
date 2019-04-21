@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rumofuture.summer.repository.TrainDao">
+
+    <insert id="save" parameterType="train" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO train(object_id, status, create_at, update_at, number, carriage_total, remainder_ticket, from_city, to_city, departure_time, ticket_price)
+        VALUES(#{objectId}, #{status}, #{createAt}, #{updateAt}, #{number}, #{carriageTotal}, #{remainderTicket}, #{fromCity}, #{toCity}, #{departureTime}, #{ticketPrice})
+    </insert>
+
+    <update id="update" parameterType="train">
+        UPDATE train
+        <set>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateAt != null">update_at = #{updateAt},</if>
+            <if test="remainderTicket != null">remainder_ticket = #{remainderTicket},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectById" parameterType="int" resultType="train">
+        SELECT * FROM train WHERE id = #{id}
+    </select>
+
+    <select id="selectByTimeZone" resultType="train">
+        SELECT * FROM train WHERE
+        <if test="endTime == null">departure_time >= #{startTime}</if>
+        <if test="endTime != null">departure_time BETWEEN #{startTime} AND #{endTime}</if>
+        limit #{page.offset}, #{page.limit}
+    </select>
+
+    <select id="selectByCity" resultType="train">
+        SELECT * FROM train WHERE departure_time >= NOW()
+        AND from_city = #{fromCity} AND to_city = #{toCity}
+    </select>
+</mapper>
