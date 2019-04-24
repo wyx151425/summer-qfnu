@@ -18,5 +18,6 @@ public class Constant {
         public static final int USER_ID_NUMBER_EXIST = 7005;
         public static final int TRAIN_EXIST = 8001;
         public static final int TICKET_EXIST = 9001;
+        public static final int TICKET_TIMEOUT = 9002;
     }
 }

@@ -47,4 +47,12 @@
     <select id="selectListContainsUser" resultMap="ticketMap">
         SELECT * FROM ticket JOIN user ON ticket.user_id = user.id WHERE ticket.status = 1;
     </select>
+
+    <delete id="delete" parameterType="int">
+        UPDATE ticket SET status = 0 WHERE id = #{id}
+    </delete>
+
+    <select id="selectOneById" parameterType="int" resultType="ticket">
+        SELECT * FROM ticket WHERE id = #{id};
+    </select>
 </mapper>

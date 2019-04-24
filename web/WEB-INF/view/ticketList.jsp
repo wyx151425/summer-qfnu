@@ -66,6 +66,7 @@
                             <td>发车时间</td>
                             <td>票价</td>
                             <td>订票时间</td>
+                            <td>操作</td>
                         </tr>
                         <c:forEach items="${requestScope.ticketList}" var="ticket">
                             <tr>
@@ -77,6 +78,7 @@
                                 <td>${ticket.departureTime}</td>
                                 <td>${ticket.price}</td>
                                 <td>${ticket.createAt}</td>
+                                <td><button class="btn btn-sm btn-primary" type="button" onclick="deleteTicket(${ticket.id});">取消</button></td>
                             </tr>
                         </c:forEach>
                     </table>
@@ -92,7 +94,6 @@
             </div>
         </div>
     </div>
-
     <div class="footer">
         <div class="footer-right pull-right">
             <a href="#">2015级软件工程四班张静</a>
@@ -109,5 +110,37 @@
     <button id="navBtn" type="button" class="close" aria-hidden="true">&times;</button>
     <div id="msgError"></div>
 </div>
+<script>
+    function deleteTicket(id) {
+        var successDiv = $("#successDiv");
+        var posBtn = $("#posBtn");
+        var msgSuccess = $("#msgSuccess");
+
+        var errorDiv = $("#errorDiv");
+        var navBtn = $("#navBtn");
+        var msgError = $("#msgError");
+        $.ajax("${pageContext.request.contextPath}/api/ticketDel/" + id,
+            {
+                dataType: "json",
+                type: "post",
+                contentType: "application/json",
+                data: null,
+                async: true,
+                success: function (data) {
+                    if (200 === data.statusCode) {
+                        successDiv.css("display", "block");
+                        msgSuccess.text("取消成功");
+                    } else if (9002 === data.statusCode) {
+                        errorDiv.css("display", "block");
+                        msgError.text("车票已过期，不可取消");
+                    } else {
+                        errorDiv.css("display", "block");
+                        msgError.text("系统错误");
+                    }
+                }
+            }
+        );
+    }
+</script>
 </body>
 </html>

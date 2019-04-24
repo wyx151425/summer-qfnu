@@ -15,4 +15,6 @@ public interface TicketDao {
             @Param("trainNo") String trainNo,
             @Param("userId") Integer userId
     );
+    Ticket selectOneById(Integer id);
+    void delete(Integer id);
 }

@@ -71,4 +71,15 @@ public class TicketServiceImpl implements TicketService {
     public List<Ticket> findTicketListWithUser() {
         return ticketDao.selectListContainsUser();
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteTicket(Integer id) {
+        Ticket ticket = ticketDao.selectOneById(id);
+        if (ticket.getDepartureTime().isBefore(LocalDateTime.now())) {
+            throw new SummerException(Constant.RespStatus.TICKET_TIMEOUT);
+        } else {
+            ticketDao.delete(id);
+        }
+    }
 }

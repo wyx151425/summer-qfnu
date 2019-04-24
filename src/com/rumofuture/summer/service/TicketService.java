@@ -10,4 +10,5 @@ public interface TicketService {
     Ticket saveTicket(Integer trainId, User user);
     List<Ticket> findTicketListByUser(Integer userId);
     List<Ticket> findTicketListWithUser();
+    void deleteTicket(Integer id);
 }
